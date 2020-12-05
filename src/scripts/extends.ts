@@ -4,6 +4,7 @@ declare global {
   interface CanvasRenderingContext2D {
     refresh(): void
     fill(color: string): void
+    text(label: string, color: string): void
     noise(option: NoiseOption): void
   }
 }
@@ -18,10 +19,20 @@ interface PatternOption {
   bright?: number
 }
 
-interface NoiseOption {
+interface Position {
   x: number
   y: number
+}
+
+interface NoiseOption extends Position {
   pattern: NoisePattern
+}
+
+interface TextOption extends Position {
+  label: string
+  color?: string
+  font: string
+  align?: string
 }
 
 // Methods
@@ -51,9 +62,16 @@ CanvasRenderingContext2D.prototype.refresh = function() {
   this.clearRect(0, 0, this.canvas.width, this.canvas.height)
 }
 
-CanvasRenderingContext2D.prototype.fill = function(color: string | null) {
-  this.fillStyle = color || '#000'
+CanvasRenderingContext2D.prototype.fill = function(color = '#fff') {
+  this.fillStyle = color
   this.fillRect(0, 0, this.canvas.width, this.canvas.height)
+}
+
+CanvasRenderingContext2D.prototype.text = function(option: TextOption) {
+  this.font = option.font
+  this.fillStyle = option.color || '#fff'
+  this.textAlign = option.align || 'center'
+  this.fillText(option.label, option.x, option.y)
 }
 
 CanvasRenderingContext2D.prototype.noise = function(option: NoiseOption) {
