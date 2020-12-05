@@ -4,6 +4,7 @@ declare global {
   interface CanvasRenderingContext2D {
     refresh(): void
     fill(color: string): void
+    noise(option: NoiseOption): void
   }
 }
 
