@@ -7,9 +7,11 @@ interface Timeline {
 }
 
 const TIMELINE: Timeline = {
-  cooltime: 70,
-  keyframes: [70, 150]
+  cooltime: 30,
+  keyframes: [30, 120]
 }
+
+const DEBUG: boolean = false
 
 window.addEventListener('load', () => {
   const canvas = document.querySelector('canvas')
@@ -22,13 +24,19 @@ window.addEventListener('load', () => {
     context.fill('#05070a')
     context.noise({ x: 0, y: 0, pattern: noisePattern })
 
+    const center = {
+      x: canvas.getAttribute('width') / 2,
+      y: canvas.getAttribute('height') / 2,
+    }
+
     TIMELINE.keyframes.map((current, index, keyframes) => {
       const cooltime = TIMELINE.cooltime
       const next = keyframes[index + 1] || Infinity
       if (time > cooltime && time >= current && time < next) {
-        console.log('now running', index, 'motion')
+        DEBUG && console.log('now running', index, 'motion')
         switch(index) {
           case 0:
+            context.text({ label: 'page', font: '40px Arial', x: center.x, y: center.y })
             break
         }
       }
