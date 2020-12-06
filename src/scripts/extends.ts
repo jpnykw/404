@@ -5,6 +5,8 @@ declare global {
     refresh(): void
     fill(color: string): void
     text(label: string, color: string): void
+    line(option: LineOption): void
+    shape(option: TextOption): void
     noise(option: NoiseOption): void
   }
 }
@@ -45,6 +47,14 @@ interface ShapeOption extends Position {
   origin?: string
 }
 
+interface LineOption {
+  origin: Position
+  dx: number
+  dy: number
+  color?: string
+  bold?: number
+}
+
 // Methods
 export const generateNoisePattern = (option: PatternOption): NoisePattern => {
   const bright = option.bright === undefined ? 1 : option.bright
@@ -80,9 +90,8 @@ CanvasRenderingContext2D.prototype.fill = function(color = '#fff') {
 CanvasRenderingContext2D.prototype.text = function(option: TextOption) {
   const padding = option.padding
   const size = option.size
-
-  this.font = `${size}px ${option.font}`
   this.fillStyle = option.color || '#fff'
+  this.font = `${size}px ${option.font}`
 
   const length = option.label.length
   const originX = option.x - length / 2 * (size + padding)
@@ -91,6 +100,21 @@ CanvasRenderingContext2D.prototype.text = function(option: TextOption) {
     const drawX = originX + i * (size + padding)
     this.fillText(option.label[i], drawX, option.y)
   }
+}
+
+CanvasRenderingContext2D.prototype.line = function(option: LineOption) {
+  const color = option.color || '#fff'
+  const bold = option.bold || 1
+  const { origin, dx, dy } = option
+
+  this.strokeStyle = color
+  this.lineWidth = bold
+
+  this.beginPath()
+  this.moveTo(origin.x, origin.y)
+  this.lineTo(origin.x + dx, origin.y + dy)
+  this.closePath()
+  this.stroke()
 }
 
 CanvasRenderingContext2D.prototype.shape = function(option: ShapeOption) {
