@@ -23,51 +23,50 @@ window.addEventListener('load', () => {
   }
 
   // Create animation
-  const textTimeline = new Timeline({ cooltime: 30, custom: { alpha: 0x10 } })
+  const textTimeline = new Timeline({ cooltime: 30, custom: { alpha: 0x20 } })
     .add(30, (_this) => {
       _this.level = 1
       _this.label = ' ag '
       blinkText({ label: _this.label, level: _this.level, ...textConfig, ...center })
     })
-    .add(37, (_this) => {
-      _this.label = '   e'
+    .add(33, (_this) => {
+      _this.label = 'p   e'
       blinkText({ label: _this.label, level: _this.level, ...textConfig, ...center })
     })
-    .add(43, (_this) => {
+    .add(35, (_this) => {
       _this.label = 'p g '
       blinkText({ label: _this.label, level: _this.level, ...textConfig, ...center })
     })
-    .add(50, (_this) => {
+    .add(38, (_this) => {
       _this.label = '  ge'
       blinkText({ label: _this.label, level: _this.level, ...textConfig, ...center })
     })
-    .add(56, (_this) => {
+    .add(43, (_this) => {
       _this.label = 'p ae'
       blinkText({ label: _this.label, level: _this.level, ...textConfig, ...center })
     })
-    .add(62, (_this) => {
+    .add(47, (_this) => {
+      _this.label = ' a e'
+      blinkText({ label: _this.label, level: _this.level, ...textConfig, ...center })
+    })
+    .add(53, (_this) => {
+      _this.level = 2
       _this.label = 'pag '
       blinkText({ label: _this.label, level: _this.level, ...textConfig, ...center })
     })
-    .add(68, (_this) => {
-      _this.level = 2
-      _this.label = 'page'
-      blinkText({ label: _this.label, level: _this.level, ...textConfig, ...center })
-    })
-    .add(76, (_this) => {
-      _this.alpha = _this.alpha + 0x04
+    .add(58, (_this) => {
       DEBUG && console.log(_this.alpha.toString(16))
-      textConfig.color = `#ffffff${_this.alpha.toString(16)}`
-      blinkText({ label: _this.label, level: _this.level, ...textConfig, ...center })
-    })
-    .add(94, (_this) => {
-      _this.level = 0
+      _this.alpha = _this.alpha + Math.abs(0x66 - _this.alpha) / 6
+      _this.level = _this.level + Math.abs(0 - this.level) / 15
+      _this.label = 'page'
+
+      textConfig.color = `#ffffff${Math.floor(_this.alpha).toString(16)}`
       blinkText({ label: _this.label, level: _this.level, ...textConfig, ...center })
     })
 
   const shapeTimeline = new Timeline({ cooltime: 30, custom: { dx: 50 } })
     .add(34, (_this) => {
-      _this.dx = _this.dx + (150 - _this.dx) / 12
+      _this.dx = _this.dx + (120 - _this.dx) / 12
       context.line({ origin: { x: center.x + 250, y: center.y - 10 }, dx: _this.dx, dy: 0 })
       context.line({ origin: { x: center.x - 250, y: center.y - 10 }, dx: -_this.dx, dy: 0 })
     })
