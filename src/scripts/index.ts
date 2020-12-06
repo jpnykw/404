@@ -1,18 +1,8 @@
+import Timeline, { TimelineOption } './timeline'
 import { generateNoisePattern } from './extends'
 import './extends'
 
 const DEBUG: boolean = false
-
-interface Timeline {
-  cooltime: number
-  keyframes: number[]
-}
-
-const TIMELINE: Timeline = {
-  cooltime: 30,
-  keyframes: [30, 38, 44, 52, 68, 86]
-  // frame:   0   1   2   3   4   5
-}
 
 window.addEventListener('load', () => {
   // Setup
@@ -27,50 +17,49 @@ window.addEventListener('load', () => {
   const noisePattern = generateNoisePattern({ width, height, level: 60000, gray: false, bright: 0.1 })
   const textConfig = { size: 34, font: 'Arial', color: '#ffffff44' }
 
+  const timeline = new Timeline({
+    cooltime: 30,
+    keyframes: [30, 38, 44, 52, 68, 86]
+    // frame:   0   1   2   3   4   5
+  })
+
+  const center = {
+    x: canvas.getAttribute('width') / 2,
+    y: canvas.getAttribute('height') / 2,
+  }
+
+  timeline
+    .add(0, (_this) => {
+      _this.level = 1
+      _this.label = ' a  '
+      blinkText({ label: _this.label, level: _this.level, ...textConfig, ...center })
+    })
+    .add(1, (_this) => {
+      _this.label = 'p  e'
+      blinkText({ label: _this.label, level: _this.level, ...textConfig, ...center })
+    })
+    .add(2, (_this) => {
+      _this.label = ' age'
+      blinkText({ label: _this.label, level: _this.level, ...textConfig, ...center })
+    })
+    .add(3, (_this) => {
+      _this.label = 'page'
+      blinkText({ label: _this.label, level: _this.level, ...textConfig, ...center })
+    })
+    .add(4, (_this) => {
+      _this.level = 2
+      blinkText({ label: _this.label, level: _this.level, ...textConfig, ...center })
+    })
+    .add(5, (_this) => {
+      _this.level = 0
+      blinkText({ label: _this.label, level: _this.level, ...textConfig, ...center })
+    })
+
   // Animation
   const loop = () => {
     context.fill('#05070a')
     context.noise({ x: 0, y: 0, pattern: noisePattern })
-
-    const center = {
-      x: canvas.getAttribute('width') / 2,
-      y: canvas.getAttribute('height') / 2,
-    }
-
-    TIMELINE.keyframes.map((current, index, keyframes) => {
-      const cooltime = TIMELINE.cooltime
-      const next = keyframes[index + 1] || Infinity
-      if (time > cooltime && time >= current && time < next) {
-        DEBUG && console.log('now running', index, 'motion')
-
-        let label: string = 'page'
-        let level: number = 1
-
-        switch(index) {
-          case 0:
-            label = ' a  '
-            break
-
-          case 1:
-            label = 'p  e'
-            break
-
-          case 2:
-            label = ' age'
-            break
-
-          case 4:
-            level = 2
-            break
-
-          case 5:
-            level = 0
-            break
-        }
-
-        blinkText({ label, level, ...textConfig, ...center })
-      }
-    })
+    timeline.run(time)
 
     time = time + 1
     requestAnimationFrame(loop)
