@@ -1,16 +1,14 @@
-interface TimelineOption {
-  keyframes: number[]
-  cooltime: number
-}
-
 export default class Timeline {
-  constructor(option: TimelineOption) {
-    Object.assign(this, option)
+  constructor(option: { cooltime: number, custom: object }) {
+    Object.assign(this, option.custom)
+    this.cooltime = option.cooltime
     this.hooks = Object.create(null)
+    this.keyframes = []
   }
 
   add(frame, method) {
-    this.hooks[`f${frame}`] = () => method(this)
+    this.keyframes.push(frame)
+    this.hooks[`f${Object.keys(this.hooks).length}`] = () => method(this)
     return this
   }
 

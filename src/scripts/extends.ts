@@ -39,7 +39,7 @@ interface TextOption extends Position {
 export const generateNoisePattern = (option: PatternOption): NoisePattern => {
   const bright = option.bright === undefined ? 1 : option.bright
   const maxPixel = option.width * option.height
-  const pattern: NoisePattern = new Array()
+  const pattern: NoisePattern = []
 
   for (let i = 0; i < option.level; i++) {
     const color = new Array(3).fill(null).map(_ => (Math.random() * 255) >> 0)
