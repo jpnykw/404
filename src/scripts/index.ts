@@ -1,4 +1,4 @@
-import Timeline, { TimelineOption } './timeline'
+import Timeline from './timeline'
 import { generateNoisePattern } from './extends'
 import './extends'
 
@@ -15,47 +15,59 @@ window.addEventListener('load', () => {
   const height = canvas.getAttribute('height')
 
   const noisePattern = generateNoisePattern({ width, height, level: 60000, gray: false, bright: 0.1 })
-  const textConfig = { size: 34, font: 'Arial', color: '#ffffff44' }
-
-  const timeline = new Timeline({
-    cooltime: 30,
-    keyframes: [30, 38, 44, 52, 68, 86]
-    // frame:   0   1   2   3   4   5
-  })
+  const textConfig = { size: 34, font: 'Arial', color: '#ffffff10' }
 
   const center = {
     x: canvas.getAttribute('width') / 2,
     y: canvas.getAttribute('height') / 2,
   }
 
+  // Create animation
+  const timeline = new Timeline({ cooltime: 30, custom: { alpha: 0x10 } })
+
   timeline
-    .add(0, (_this) => {
+    .add(30, (_this) => {
       _this.level = 1
-      _this.label = ' a  '
+      _this.label = ' ag '
       blinkText({ label: _this.label, level: _this.level, ...textConfig, ...center })
     })
-    .add(1, (_this) => {
-      _this.label = 'p  e'
+    .add(37, (_this) => {
+      _this.label = '   e'
       blinkText({ label: _this.label, level: _this.level, ...textConfig, ...center })
     })
-    .add(2, (_this) => {
-      _this.label = ' age'
+    .add(43, (_this) => {
+      _this.label = 'p g '
       blinkText({ label: _this.label, level: _this.level, ...textConfig, ...center })
     })
-    .add(3, (_this) => {
+    .add(50, (_this) => {
+      _this.label = '  ge'
+      blinkText({ label: _this.label, level: _this.level, ...textConfig, ...center })
+    })
+    .add(56, (_this) => {
+      _this.label = 'p ae'
+      blinkText({ label: _this.label, level: _this.level, ...textConfig, ...center })
+    })
+    .add(62, (_this) => {
+      _this.label = 'pag '
+      blinkText({ label: _this.label, level: _this.level, ...textConfig, ...center })
+    })
+    .add(68, (_this) => {
+      _this.level = 2
       _this.label = 'page'
       blinkText({ label: _this.label, level: _this.level, ...textConfig, ...center })
     })
-    .add(4, (_this) => {
-      _this.level = 2
+    .add(76, (_this) => {
+      _this.alpha = _this.alpha + 0x04
+      DEBUG && console.log(_this.alpha.toString(16))
+      textConfig.color = `#ffffff${_this.alpha.toString(16)}`
       blinkText({ label: _this.label, level: _this.level, ...textConfig, ...center })
     })
-    .add(5, (_this) => {
+    .add(94, (_this) => {
       _this.level = 0
       blinkText({ label: _this.label, level: _this.level, ...textConfig, ...center })
     })
 
-  // Animation
+  // Draw & Update
   const loop = () => {
     context.fill('#05070a')
     context.noise({ x: 0, y: 0, pattern: noisePattern })
