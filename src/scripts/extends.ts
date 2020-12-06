@@ -30,9 +30,9 @@ interface NoiseOption extends Position {
 
 interface TextOption extends Position {
   label: string
-  color?: string
   font: string
-  align?: string
+  size: number
+  color?: string
 }
 
 // Methods
@@ -68,10 +68,17 @@ CanvasRenderingContext2D.prototype.fill = function(color = '#fff') {
 }
 
 CanvasRenderingContext2D.prototype.text = function(option: TextOption) {
-  this.font = option.font
+  const size = option.size
+  this.font = `${size}px ${option.font}`
   this.fillStyle = option.color || '#fff'
-  this.textAlign = option.align || 'center'
-  this.fillText(option.label, option.x, option.y)
+
+  const length = option.label.length
+  const originX = option.x - length / 2 * size
+
+  for (let i = 0; i < length; i++) {
+    const drawX = originX + i * size
+    this.fillText(option.label[i], drawX, option.y)
+  }
 }
 
 CanvasRenderingContext2D.prototype.noise = function(option: NoiseOption) {

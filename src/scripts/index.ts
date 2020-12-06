@@ -36,7 +36,10 @@ window.addEventListener('load', () => {
         DEBUG && console.log('now running', index, 'motion')
         switch(index) {
           case 0:
-            context.text({ label: 'page', font: '40px Arial', x: center.x, y: center.y })
+            const shadowTextConfig = { ...textConfig }
+            context.text({ label: 'page', ...shadowTextConfig, ...center })
+            shadowTextConfig.color = '#eee'
+            context.text({ label: '  ge', ...shadowTextConfig, ...center })
             break
         }
       }
@@ -48,7 +51,9 @@ window.addEventListener('load', () => {
 
   const width = canvas.getAttribute('width')
   const height = canvas.getAttribute('height')
-  const noisePattern = generateNoisePattern({ width, height, level: 18000, gray: true, bright: 0.2 })
+
+  const noisePattern = generateNoisePattern({ width, height, level: 60000, gray: false, bright: 0.1 })
+  const textConfig = { size: 40, font: 'Arial', color: '#ffffff11' }
 
   let time = 0
   loop()
