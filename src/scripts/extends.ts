@@ -32,6 +32,7 @@ interface TextOption extends Position {
   label: string
   font: string
   size: number
+  padding: number
   color?: string
 }
 
@@ -77,15 +78,17 @@ CanvasRenderingContext2D.prototype.fill = function(color = '#fff') {
 }
 
 CanvasRenderingContext2D.prototype.text = function(option: TextOption) {
+  const padding = option.padding
   const size = option.size
+
   this.font = `${size}px ${option.font}`
   this.fillStyle = option.color || '#fff'
 
   const length = option.label.length
-  const originX = option.x - length / 2 * size
+  const originX = option.x - length / 2 * (size + padding)
 
   for (let i = 0; i < length; i++) {
-    const drawX = originX + i * size
+    const drawX = originX + i * (size + padding)
     this.fillText(option.label[i], drawX, option.y)
   }
 }
