@@ -10,7 +10,8 @@ interface Timeline {
 
 const TIMELINE: Timeline = {
   cooltime: 30,
-  keyframes: [30, 120]
+  keyframes: [30, 38, 44, 52, 68, 86]
+  // frame:   0   1   2   3   4   5
 }
 
 window.addEventListener('load', () => {
@@ -24,7 +25,7 @@ window.addEventListener('load', () => {
   const height = canvas.getAttribute('height')
 
   const noisePattern = generateNoisePattern({ width, height, level: 60000, gray: false, bright: 0.1 })
-  const textConfig = { size: 40, font: 'Arial', color: '#ffffff44' }
+  const textConfig = { size: 34, font: 'Arial', color: '#ffffff44' }
 
   // Animation
   const loop = () => {
@@ -41,17 +42,33 @@ window.addEventListener('load', () => {
       const next = keyframes[index + 1] || Infinity
       if (time > cooltime && time >= current && time < next) {
         DEBUG && console.log('now running', index, 'motion')
+
+        let label: string = 'page'
+        let level: number = 1
+
         switch(index) {
           case 0:
-            /*
-            const shadowTextConfig = { ...textConfig }
-            context.text({ label: 'page', ...shadowTextConfig, ...center })
-            shadowTextConfig.color = '#eee'
-            context.text({ label: '  ge', ...shadowTextConfig, ...center })
-            */
-            blinkText({ label: 'blink!', level: 3, ...textConfig, ...center })
+            label = ' a  '
+            break
+
+          case 1:
+            label = 'p  e'
+            break
+
+          case 2:
+            label = ' age'
+            break
+
+          case 4:
+            level = 2
+            break
+
+          case 5:
+            level = 0
             break
         }
+
+        blinkText({ label, level, ...textConfig, ...center })
       }
     })
 
