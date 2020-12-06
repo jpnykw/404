@@ -15,7 +15,7 @@ window.addEventListener('load', () => {
   const height = canvas.getAttribute('height')
 
   const noisePattern = generateNoisePattern({ width, height, level: 60000, gray: false, bright: 0.1 })
-  const textConfig = { size: 34, font: 'Arial', color: '#ffffff10' }
+  const textConfig = { size: 34, padding: -8, font: 'itc-avant-garde-gothic-pro, sans-serif', color: '#ffffff10' }
 
   const center = {
     x: canvas.getAttribute('width') / 2,
