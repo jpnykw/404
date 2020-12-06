@@ -35,6 +35,15 @@ interface TextOption extends Position {
   color?: string
 }
 
+interface ShapeOption extends Position {
+  type: string
+  width: number
+  height: number
+  color?: string
+  fill?: boolean
+  origin?: string
+}
+
 // Methods
 export const generateNoisePattern = (option: PatternOption): NoisePattern => {
   const bright = option.bright === undefined ? 1 : option.bright
@@ -78,6 +87,23 @@ CanvasRenderingContext2D.prototype.text = function(option: TextOption) {
   for (let i = 0; i < length; i++) {
     const drawX = originX + i * size
     this.fillText(option.label[i], drawX, option.y)
+  }
+}
+
+CanvasRenderingContext2D.prototype.shape = function(option: ShapeOption) {
+  const fill = option.fill || false
+  const color = option.color || '#fff'
+  this[fill ? 'fillStyle' : 'strokeStyle'] = color
+
+  const { width, height, origin } = option
+  const x = origin === 'center' ? option.x - width / 2 : x
+  const y = origin === 'center' ? option.y - height / 2 : y
+
+  switch (option.type) {
+    case 'square':
+      this.rect(x, y, width, height)
+      this[fill ? 'fill' : 'stroke']()
+      break
   }
 }
 

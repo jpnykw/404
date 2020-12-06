@@ -4,6 +4,7 @@ export default class Timeline {
     this.cooltime = option.cooltime
     this.hooks = Object.create(null)
     this.keyframes = []
+    return this
   }
 
   add(frame, method) {

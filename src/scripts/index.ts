@@ -23,9 +23,7 @@ window.addEventListener('load', () => {
   }
 
   // Create animation
-  const timeline = new Timeline({ cooltime: 30, custom: { alpha: 0x10 } })
-
-  timeline
+  const textTimeline = new Timeline({ cooltime: 30, custom: { alpha: 0x10 } })
     .add(30, (_this) => {
       _this.level = 1
       _this.label = ' ag '
@@ -67,11 +65,18 @@ window.addEventListener('load', () => {
       blinkText({ label: _this.label, level: _this.level, ...textConfig, ...center })
     })
 
+  const shapeTimeline = new Timeline({ cooltime: 30 })
+    .add(30, (_this) => {
+      context.shape({ type: 'square', width: 500, height: 500, origin: 'center', ...center })
+    })
+
   // Draw & Update
   const loop = () => {
     context.fill('#05070a')
     context.noise({ x: 0, y: 0, pattern: noisePattern })
-    timeline.run(time)
+
+    textTimeline.run(time)
+    shapeTimeline.run(time)
 
     time = time + 1
     requestAnimationFrame(loop)
