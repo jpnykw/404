@@ -65,9 +65,11 @@ window.addEventListener('load', () => {
       blinkText({ label: _this.label, level: _this.level, ...textConfig, ...center })
     })
 
-  const shapeTimeline = new Timeline({ cooltime: 30 })
-    .add(30, (_this) => {
-      context.shape({ type: 'square', width: 500, height: 500, origin: 'center', ...center })
+  const shapeTimeline = new Timeline({ cooltime: 30, custom: { dx: 50 } })
+    .add(34, (_this) => {
+      _this.dx = _this.dx + (150 - _this.dx) / 12
+      context.line({ origin: { x: center.x + 250, y: center.y - 10 }, dx: _this.dx, dy: 0 })
+      context.line({ origin: { x: center.x - 250, y: center.y - 10 }, dx: -_this.dx, dy: 0 })
     })
 
   // Draw & Update
